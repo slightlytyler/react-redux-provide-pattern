@@ -118,7 +118,6 @@ export const reducers = combineReducers({
   },
 });
 
-
 // Provider
 import { createProvider } from 'react-redux-provide-pattern';
 
@@ -130,6 +129,7 @@ todos.reducers = reducers;
 
 export default todos;
 ```
+
 
 TodoList component:
 ```javascript
@@ -162,18 +162,18 @@ class TodoList extends Component {
   }
 }
 
-
 import { provide } from 'react-redux-provide-pattern';
 import todosProvider from '../providers/todos';
 
 export default provide(todosProvider)(TodoList);
 ```
 
+
 TodoItem component:
 ```javascript
 import React, { PropTypes, Component } from 'react';
 
-class LaneItem extends Component {
+class TodoItem extends Component {
   static propTypes = {
     todo: PropTypes.object.isRequired,
     toggleTodo: PropTypes.func.isRequired,
@@ -198,6 +198,7 @@ import todosProvider from '../providers/todos';
 
 export default provide(todosProvider)(TodoItem);
 ```
+
 
 TodoCreator component:
 ```javascript
