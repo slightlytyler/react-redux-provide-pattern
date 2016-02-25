@@ -25,6 +25,12 @@ module.exports = {
     'react-dom': 'react-dom',
     redux: 'redux',
     'react-redux': 'react-redux',
-    lodash: 'lodash'
+    'lodash.capitalize': 'lodash.capitalize',
+    'lodash.intersection': 'lodash.intersection',
+    'lodash.keys': 'lodash.keys',
+    'lodash.map': 'lodash.map',
+    'lodash.omit': 'lodash.omit',
+    'lodash.uppercase': 'lodash.uppercase',
+    'lodash.zipobject': 'lodash.zipobject'
   }
 };
