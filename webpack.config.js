@@ -14,6 +14,7 @@ module.exports = {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
+        include: __dirname,
         query: {
           presets: ['es2015', 'react', 'stage-1']
         }
@@ -26,11 +27,13 @@ module.exports = {
     redux: 'redux',
     'react-redux': 'react-redux',
     'lodash.capitalize': 'lodash.capitalize',
+    'lodash.uppercase': 'lodash.uppercase',
     'lodash.intersection': 'lodash.intersection',
     'lodash.keys': 'lodash.keys',
     'lodash.map': 'lodash.map',
     'lodash.omit': 'lodash.omit',
-    'lodash.uppercase': 'lodash.uppercase',
-    'lodash.zipobject': 'lodash.zipobject'
+    'lodash.without': 'lodash.without',
+    'lodash.zipobject': 'lodash.zipobject',
+    'update-in': 'update-in'
   }
 };

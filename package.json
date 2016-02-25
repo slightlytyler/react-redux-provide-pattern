@@ -43,9 +43,11 @@
     "lodash.map": "^4.2.0",
     "lodash.omit": "^4.1.0",
     "lodash.uppercase": "^4.1.0",
+    "lodash.without": "^4.1.0",
     "lodash.zipobject": "^4.1.2",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
+    "update-in": "0.0.1-alpha.5",
     "uppercase": "^0.1.1"
   }
 }
