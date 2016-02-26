@@ -52,7 +52,7 @@ count.actions = {
   doubleCountAsync() {
     return (dispatch, getState) => {
       dispatch({
-        type: DOUBLE_COUNT,
+        type: INCREMENT_COUNT,
         increment: getState().count * 2
       });
     };
