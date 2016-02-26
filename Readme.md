@@ -12,15 +12,17 @@ What is a provider? It is an object that contains the constants, actions, reduce
 some convention we can have the needed state and action creators passed to the component without manually writing `mapStateToProps` or `mapDispatchToProps`.
 
 `createProvider` function: creates a provider object. Attach constants, actions, and reducers to it.
-`createResourceProvider` function: creates a provider object with basic actions and reducers for handling a **resource**. A resource is slice of state that represents
+
+`createResourceProvider` function: creates a provider object with basic actions and reducers for handling a *resource*. A resource is slice of state that represents
 a collection of elements of the same type.
+
 `provide` decorator: creates a HOC connected to the store with state and actions automatically bound based on the source components propTypes.
 
 ## Basic Example
 
 A simple counter
 
-Count provider
+**Count provider**:
 ```javascript
 import { createProvider } from 'react-redux-provide-pattern';
 
@@ -72,13 +74,13 @@ export default count;
 ```
 
 
-Counter component
+**Counter component**:
 ```javascript
 import React, { PropTypes, Component } from 'react';
 
 class Counter extends Component {
   static propTypes = {
-    count: PropTypes.object.isRequired,
+    count: PropTypes.number.isRequired,
     incrementCount: PropTypes.func.isRequired,
     decrementCount: PropTypes.func.isRequired,
     doubleCountAsync: PropTypes.func.isRequired,
@@ -111,7 +113,7 @@ export default provide(countProvider)(Counter);
 
 ## Todo example using Resource Provider
 
-Todos provider:
+**Todos provider**:
 ```javascript
 // Provider
 import { createResourceProvider } from 'react-redux-provide-pattern';
@@ -137,7 +139,7 @@ export default todos;
 ```
 
 
-TodoList component:
+**TodoList component**:
 ```javascript
 import React, { PropTypes, Component } from 'react';
 
@@ -175,7 +177,7 @@ export default provide(todosProvider)(TodoList);
 ```
 
 
-TodoItem component:
+**TodoItem component**:
 ```javascript
 import React, { PropTypes, Component } from 'react';
 
@@ -206,7 +208,7 @@ export default provide(todosProvider)(TodoItem);
 ```
 
 
-TodoCreator component:
+**TodoCreator component**:
 ```javascript
 import React, { PropTypes, Component } from 'react';
 
