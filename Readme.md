@@ -6,11 +6,21 @@ A toolset for the pattern outlined by [react-redux-provide](https://github.com/l
 
 npm module coming soon! for now you'll have to clone this repo, build the module, and link it
 
-## Example
+### API
+
+What is a provider? It is an object that contains the constants, actions, reducers, and selectors for a particular slice of redux state. By following
+some convention we can have the needed state and action creators passed to the component without manually writing `mapStateToProps` or `mapDispatchToProps`.
+
+`createProvider` function: creates a provider object. Attach constants, actions, and reducers to it.
+`createResourceProvider` function: creates a provider object with basic actions and reducers for handling a **resource**. A resource is slice of state that represents
+a collection of elements of the same type.
+`provide` decorator: creates a HOC connected to the store with state and actions automatically bound based on the source components propTypes.
+
+## Basic Example
 
 A simple counter
 
-Provider
+Count provider
 ```javascript
 import { createProvider } from 'react-redux-provide-pattern';
 
@@ -99,11 +109,9 @@ import countProvider from '../providers/count';
 export default provide(countProvider)(Counter);
 ```
 
-## Resource Provider
+## Todo example using Resource Provider
 
-Here's a basic todo example
-
-Provider:
+Todos provider:
 ```javascript
 // Provider
 import { createResourceProvider } from 'react-redux-provide-pattern';
@@ -125,7 +133,7 @@ todos.actions.createTodo = title => ({
   payload: { title },
 });
 
-export default lanes;
+export default todos;
 ```
 
 
@@ -219,10 +227,10 @@ class TodoCreator extends Component {
     }
 
     this.props.createTodo(title);
-    this.clear();
+    this.reset();
   }
 
-  clear = () => {
+  reset = () => {
     this.setState({
       title: '',
     });
