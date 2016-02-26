@@ -32,7 +32,6 @@ module.exports = {
     'lodash.keys': 'lodash.keys',
     'lodash.map': 'lodash.map',
     'lodash.omit': 'lodash.omit',
-    'lodash.without': 'lodash.without',
     'lodash.zipobject': 'lodash.zipobject',
     'update-in': 'update-in'
   }

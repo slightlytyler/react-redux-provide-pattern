@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
 import upperCase from 'lodash.uppercase';
 import capitalize from 'lodash.capitalize';
-import without from 'lodash.without';
-import omit from 'lodash.omit';
-import { updateIn, push } from 'update-in';
+import { updateIn, push, merge, dissoc } from 'update-in';
 
 import baseProvider from './base';
 
@@ -54,7 +52,7 @@ export default function resourceProvider(type, recordName, keyName) {
           return push(state, [action.id]);
 
         case DELETE:
-          return without(state, action.id);
+          return dissoc(state, state.indexOf(action.id));
 
         default:
           return state;
@@ -73,7 +71,7 @@ export default function resourceProvider(type, recordName, keyName) {
           return updateIn(state, [action.id], merge, action.payload);
 
         case DELETE:
-          return omit(state, action.id);
+          return dissoc(state, action.id);
 
         default:
           return state;
