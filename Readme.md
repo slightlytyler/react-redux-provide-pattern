@@ -132,8 +132,32 @@ import generateId from 'shortid';
 todos.actions.createTodo = title => ({
   type: SET_TODO,
   id: generateId(),
-  payload: { title },
+  payload: {
+    title,
+    completed: false
+  },
 });
+
+todos.actions.toggleTodo = id => (dispatch, getState) => {
+  dispatch({
+    type: UPDATE_TODO,
+    id,
+    payload: {
+      completed: !getState().todos.recordsById[id].completed
+    }
+  });
+};
+
+todos.actions.clearCompleted = () => (dispatch, getState) => {
+  const { records, recordsById } = getState().todos;
+  const { deleteTodo } = todos.actions;
+
+  records.forEach(id => {
+    if (recordsById[id].completed) {
+      dispatch(deleteTodo(id));
+    }
+  });
+};
 
 export default todos;
 ```
