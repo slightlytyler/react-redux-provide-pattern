@@ -38,14 +38,14 @@ count.actions = {
   incrementCount(magnitude = 1) {
     return {
       type: INCREMENT_COUNT,
-      increment: magnitude
+      increment: magnitude,
     };
   },
 
   decrementCount(magnitude = 1) {
     return {
       type: INCREMENT_COUNT,
-      increment: -magnitude
+      increment: -magnitude,
     };
   },
 
@@ -53,7 +53,7 @@ count.actions = {
     return (dispatch, getState) => {
       dispatch({
         type: INCREMENT_COUNT,
-        increment: getState().count * 2
+        increment: getState().count,
       });
     };
   },
@@ -72,7 +72,6 @@ count.reducers = (state = 0, action) => {
 
 export default count;
 ```
-
 
 **Counter component**:
 ```javascript
@@ -162,7 +161,6 @@ todos.actions.clearCompleted = () => (dispatch, getState) => {
 export default todos;
 ```
 
-
 **TodoList component**:
 ```javascript
 import React, { PropTypes, Component } from 'react';
@@ -200,7 +198,6 @@ import todosProvider from '../providers/todos';
 export default provide(todosProvider)(TodoList);
 ```
 
-
 **TodoItem component**:
 ```javascript
 import React, { PropTypes, Component } from 'react';
@@ -230,7 +227,6 @@ import todosProvider from '../providers/todos';
 
 export default provide(todosProvider)(TodoItem);
 ```
-
 
 **TodoCreator component**:
 ```javascript
