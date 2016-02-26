@@ -8,126 +8,124 @@ npm module coming soon! for now you'll have to clone this repo, build the module
 
 ## Example
 
+A simple counter
+
+Provider
+```javascript
+import { createProvider } from 'react-redux-provide-pattern';
+
+const count = createProvider('count');
+
+// Constants
+const INCREMENT_COUNT = 'INCREMENT_COUNT';
+
+counter.constants = { INCREMENT_COUNT };
+
+// Actions
+count.actions = {
+  incrementCount(magnitude = 1) {
+    return {
+      type: INCREMENT_COUNT,
+      increment: magnitude
+    };
+  },
+
+  decrementCount(magnitude = 1) {
+    return {
+      type: INCREMENT_COUNTER,
+      increment: -magnitude
+    };
+  },
+
+  doubleCountAsync() {
+    return (dispatch, getState) => {
+      dispatch({
+        type: DOUBLE_COUNT,
+        increment: getState().count * 2
+      });
+    };
+  },
+};
+
+// Reducers
+count.reducers = (state = 0, action) => {
+  switch (action.type) {
+    case INCREMENT_COUNT:
+      return state + action.increment;
+
+    default:
+      return state;
+  }
+};
+
+export default count;
+```
+
+
+Counter component
+```javascript
+import React, { PropTypes, Component } from 'react';
+
+class Counter extends Component {
+  static propTypes = {
+    count: PropTypes.object.isRequired,
+    incrementCount: PropTypes.func.isRequired,
+    decrementCount: PropTypes.func.isRequired,
+    doubleCountAsync: PropTypes.func.isRequired,
+  };
+
+  render() {
+    const {
+      count,
+      incrementCount,
+      decrementCount,
+      doubleCountAsync,
+    } = this.props;
+
+    return (
+      <div>
+        <div>Current count: {count}</div>
+        <button onClick={decrementCount}>-</button>
+        <button onClick={incrementCount}>+</button>
+        <button onClick={doubleCountAsync}>x2</button>
+      </div>
+    );
+  }
+}
+
+import { provide } from 'react-redux-provide-pattern';
+import countProvider from '../providers/count';
+
+export default provide(countProvider)(Counter);
+```
+
+## Resource Provider
+
 Here's a basic todo example
 
 Provider:
 ```javascript
+// Provider
+import { createResourceProvider } from 'react-redux-provide-pattern';
+
+const todos = createResourceProvider('todos', 'todo', 'todoKey');
+const { SET_TODO, UPDATE_TODO, DELETE_TODO } = lanes.constants;
+
 // Constants
-const CREATE_TODO = 'CREATE_TODO';
-const UPDATE_TODO = 'UPDATE_TODO';
-const REMOVE_TODO = 'REMOVE_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 
-export const constants = {
-  CREATE_LANE,
-  UPDATE_TODO,
-  REMOVE_TODO,
-  TOGGLE_TODO
-};
+todos.constants.TOGGLE_TODO = TOGGLE_TODO;
 
 // Actions
 import generateId from 'shortid';
 
-export const actions = {
-  createTodo(title) {
-    return {
-      type: CREATE_TODO,
-      id: generateId(),
-      title,
-    };
-  },
-
-  updateTodo(id, payload) {
-    return {
-      type: UPDATE_TODO,
-      id,
-      payload
-    };
-  },
-
-  removeTodo(id) {
-    return {
-      type: REMOVE_TODO,
-      id
-    };
-  },
-
-  toggleTodo(id) {
-    return {
-      type: TOGGLE_TODO,
-      id
-    };
-  }
-};
-
-// Reducers
-import { combineReducers } from 'redux';
-
-export const reducers = combineReducers({
-  records(state = [], action) {
-    switch (action.type) {
-      case CREATE_TODO:
-        return [...state, action.id];
-
-      case REMOVE_TODO:
-        return state.splice(state.indexOf(action.id), 1);
-
-      default:
-        return state;
-    }
-  },
-
-  recordsById(state = {}, action) {
-    switch (action.type) {
-      case CREATE_TODO: {
-        const { id, title } = action;
-        return Object.assign({}, state, {
-          [id]: {
-            id,
-            title,
-          },
-        });
-      }
-
-      case UPDATE_TODO: {
-        const { id, payload } = action;
-        return Object.assign({}, state, {
-          [id]: {
-            id,
-            ...payload
-          }
-        });
-      }
-
-      case REMOVE_TODO: {
-        const newState = Object.assign({}, state);
-        delete newState[action.id];
-        return newState;
-      }
-
-      case TOGGLE_TODO:
-        return Object.assign({}, state, {
-          [action.id]: Object.assign({}, state[action.id], {
-            completed: !state[action.id].completed
-          }),
-        });
-
-      default:
-        return state;
-    }
-  },
+todos.actions.createTodo = title => ({
+  type: SET_TODO,
+  id: generateId(),
+  payload: { title },
 });
 
-// Provider
-import { createProvider } from 'react-redux-provide-pattern';
-
-const todos = createProvider('todos', 'todo', 'todoKey');
-
-todos.constants = constants;
-todos.actions = actions;
-todos.reducers = reducers;
-
-export default todos;
+export default lanes;
 ```
 
 
