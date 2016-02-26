@@ -20,7 +20,7 @@ a collection of elements of the same type.
 
 ## Basic Example
 
-A simple counter
+A simple [counter](https://github.com/slightlytyler/react-redux-provide-pattern-counter)
 
 **Count provider**:
 ```javascript
@@ -38,14 +38,14 @@ count.actions = {
   incrementCount(magnitude = 1) {
     return {
       type: INCREMENT_COUNT,
-      increment: magnitude,
+      increment: magnitude
     };
   },
 
   decrementCount(magnitude = 1) {
     return {
       type: INCREMENT_COUNT,
-      increment: -magnitude,
+      increment: -magnitude
     };
   },
 
@@ -53,7 +53,7 @@ count.actions = {
     return (dispatch, getState) => {
       dispatch({
         type: INCREMENT_COUNT,
-        increment: getState().count,
+        increment: getState().count
       });
     };
   },
@@ -85,20 +85,19 @@ class Counter extends Component {
     doubleCountAsync: PropTypes.func.isRequired,
   };
 
-  render() {
-    const {
-      count,
-      incrementCount,
-      decrementCount,
-      doubleCountAsync,
-    } = this.props;
+  increment = () => this.props.incrementCount();
 
+  decrement = () => this.props.decrementCount();
+
+  double = () => this.props.doubleCountAsync();
+
+  render() {
     return (
       <div>
-        <div>Current count: {count}</div>
-        <button onClick={decrementCount}>-</button>
-        <button onClick={incrementCount}>+</button>
-        <button onClick={doubleCountAsync}>x2</button>
+        <div>Current count: {this.props.count}</div>
+        <button onClick={this.decrement}>-</button>
+        <button onClick={this.increment}>+</button>
+        <button onClick={this.double}>x2</button>
       </div>
     );
   }
