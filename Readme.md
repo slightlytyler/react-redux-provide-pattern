@@ -31,7 +31,7 @@ const count = createProvider('count');
 // Constants
 const INCREMENT_COUNT = 'INCREMENT_COUNT';
 
-counter.constants = { INCREMENT_COUNT };
+count.constants = { INCREMENT_COUNT };
 
 // Actions
 count.actions = {
@@ -44,7 +44,7 @@ count.actions = {
 
   decrementCount(magnitude = 1) {
     return {
-      type: INCREMENT_COUNTER,
+      type: INCREMENT_COUNT,
       increment: -magnitude
     };
   },
