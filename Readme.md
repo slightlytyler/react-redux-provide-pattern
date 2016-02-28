@@ -117,7 +117,7 @@ export default provide(countProvider)(Counter);
 import { createResourceProvider } from 'react-redux-provide-pattern';
 
 const todos = createResourceProvider('todos', 'todo', 'todoKey');
-const { SET_TODO, UPDATE_TODO, DELETE_TODO } = lanes.constants;
+const { SET_TODO, UPDATE_TODO, DELETE_TODO } = todos.constants;
 
 // Constants
 const TOGGLE_TODO = 'TOGGLE_TODO';
@@ -204,8 +204,11 @@ import React, { PropTypes, Component } from 'react';
 class TodoItem extends Component {
   static propTypes = {
     todo: PropTypes.object.isRequired,
+    deleteTodo: PropTypes.func.isRequired,
     toggleTodo: PropTypes.func.isRequired,
   };
+
+  delete = () => this.props.deleteTodo(this.props.todo.id);
 
   toggle = () => this.props.toggleTodo(this.props.todo.id);
 
@@ -216,6 +219,7 @@ class TodoItem extends Component {
       <div>
         <div>{title}</div>
         <input type="checkbox" value={completed} onClick={this.toggle} />
+        <button onClick={this.delete}>x</button>
       </div>
     );
   }
@@ -236,12 +240,8 @@ class TodoCreator extends Component {
     createTodo: PropTypes.func.isRequired,
   };
 
-  state = {
-    title: '',
-  };
-
   submit = () => {
-    const { title } = this.state;
+    const title = this.refs.title.value;
 
     if (!title) {
       return;
@@ -251,20 +251,22 @@ class TodoCreator extends Component {
     this.reset();
   }
 
+  handleReturn = e => {
+    if (e.which === 13) {
+      this.submit;
+    }
+  }
+
   reset = () => {
-    this.setState({
-      title: '',
-    });
+    this.refs.title.value = '';
   };
 
   render() {
     return (
       <div>
         <input
-          value={this.state.title}
-          onChange={(e) => this.setState({
-            title: e.target.value,
-          })}
+          ref="title"
+          onKeyDown={this.handleReturn}
         />
         <button onClick={this.submit}>Add</button>
       </div>

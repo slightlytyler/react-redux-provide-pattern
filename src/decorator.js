@@ -10,7 +10,7 @@ export default function provide(provider, merge) {
 
   let availableStateProps = [_providerType];
   if (provider._additionalStateProps) {
-    availableStateProps.concat(provider._additionalStateProps);
+    availableStateProps = availableStateProps.concat(provider._additionalStateProps);
   }
   if (typeof reducers === 'object') {
     availableStateProps.push(keys(provider.reducers));
