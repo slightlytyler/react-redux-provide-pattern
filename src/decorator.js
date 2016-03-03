@@ -8,7 +8,7 @@ import map from 'lodash.map';
 export default function provide(provider, merge) {
   const { _providerType, reducers, actions } = provider;
 
-  let availableStateProps = [_providerType];
+  let availableStateProps = [_providerType, ...keys(provider.selectors)];
   if (provider._additionalStateProps) {
     availableStateProps = availableStateProps.concat(provider._additionalStateProps);
   }

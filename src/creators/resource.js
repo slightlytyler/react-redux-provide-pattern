@@ -15,32 +15,9 @@ export default function resourceProvider(type, recordName, recordKey) {
 
   // Add aditional provider keys
   const typeById = `${type}ById`;
+  provider._providerTypeById = typeById;
   provider._providerRecordName = recordName;
   provider._providerRecordKey = recordKey;
-  provider._additionalStateProps = [typeById, recordName];
-  provider._mapStateToProps = requestedStateProps => (state, props) => {
-    const providerState = state[type];
-
-    const mapPropToState = prop => {
-      const propsStateMap = {
-        [type]: providerState.records,
-        [typeById]: providerState.recordsById,
-        [recordName]: providerState.recordsById[props[recordKey]],
-      };
-
-      return propsStateMap.hasOwnProperty(prop)
-        ? propsStateMap[prop]
-        : providerState[prop]
-      ;
-    };
-
-    return zipObject(requestedStateProps, map(requestedStateProps, mapPropToState));
-  };
-
-  // Create objects for constants, actions, reducers
-  provider.constants = {};
-  provider.actions = {};
-  provider.reducers = {};
 
   // Constants
   const SET = `SET_${upperCase(recordName)}`;
@@ -105,6 +82,36 @@ export default function resourceProvider(type, recordName, recordKey) {
       }
     },
   });
+
+  // Selectors
+  provider.selectors.records = state => state.todos.records;
+  provider.selectors.recordsById = state => state.todos.recordsById;
+
+  // Augment state mapping
+  provider._additionalStateProps = [typeById, recordName];
+  provider._mapStateToProps = requestedStateProps => (state, props) => {
+    const providerState = state[type];
+
+    const mapPropToState = prop => {
+      const propsStateMap = {
+        [type]: providerState.records,
+        [typeById]: providerState.recordsById,
+        [recordName]: providerState.recordsById[props[recordKey]],
+      };
+
+      if (propsStateMap.hasOwnProperty(prop)) {
+        return propsStateMap[prop];
+      }
+      else if (provider.selectors.hasOwnProperty(prop)) {
+        return provider.selectors[prop](state);
+      }
+      else {
+        return providerState[prop];
+      }
+    };
+
+    return zipObject(requestedStateProps, map(requestedStateProps, mapPropToState));
+  };
 
   return provider;
 }

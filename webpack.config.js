@@ -22,10 +22,11 @@ module.exports = {
     ]
   },
   externals: {
-    react: 'react',
+    'react': 'react',
     'react-dom': 'react-dom',
-    redux: 'redux',
+    'redux': 'redux',
     'react-redux': 'react-redux',
+    'reselect': 'reselect',
     'lodash.capitalize': 'lodash.capitalize',
     'lodash.uppercase': 'lodash.uppercase',
     'lodash.intersection': 'lodash.intersection',

@@ -46,6 +46,7 @@
     "lodash.zipobject": "^4.1.2",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
+    "reselect": "^2.0.3",
     "update-in": "0.0.1-alpha.5",
     "uppercase": "^0.1.1"
   }
