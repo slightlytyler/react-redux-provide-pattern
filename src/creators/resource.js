@@ -49,7 +49,7 @@ export default function resourceProvider(type, recordName, recordKey) {
   provider.actions[`delete${capitalize(recordName)}`] = deleteFn;
 
   // Reducers
-  provider.reducers = combineReducers({
+  provider.reducers = {
     records(state = [], action) {
       switch (action.type) {
         case SET:
@@ -81,7 +81,7 @@ export default function resourceProvider(type, recordName, recordKey) {
           return state;
       }
     },
-  });
+  };
 
   // Selectors
   provider.selectors.records = state => state.todos.records;

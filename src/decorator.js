@@ -13,7 +13,7 @@ export default function provide(provider, merge) {
     availableStateProps = availableStateProps.concat(provider._additionalStateProps);
   }
   if (typeof reducers === 'object') {
-    availableStateProps.push(keys(provider.reducers));
+    availableStateProps = availableStateProps.concat(keys(provider.reducers));
   }
   const availableDispatchProps = keys(provider.actions);
 
