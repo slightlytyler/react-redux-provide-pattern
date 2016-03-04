@@ -34,6 +34,9 @@ module.exports = {
     'lodash.map': 'lodash.map',
     'lodash.omit': 'lodash.omit',
     'lodash.zipobject': 'lodash.zipobject',
+    'lodash.mapvalues': 'lodash.mapvalues',
+    'lodash.filter': 'lodash.filter',
+    'lodash.pickby': 'lodash.pickby',
     'update-in': 'update-in'
   }
 };

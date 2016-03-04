@@ -3,6 +3,9 @@ import upperCase from 'lodash.uppercase';
 import capitalize from 'lodash.capitalize';
 import zipObject from 'lodash.zipobject';
 import map from 'lodash.map';
+import mapValues from 'lodash.mapvalues';
+import filter from 'lodash.filter';
+import pickBy from 'lodash.pickby'
 import { updateIn, push, merge, dissoc } from 'update-in';
 
 import baseProvider from './base';
@@ -22,11 +25,15 @@ export default function resourceProvider(type, recordName, recordKey) {
   // Constants
   const SET = `SET_${upperCase(recordName)}`;
   const UPDATE = `UPDATE_${upperCase(recordName)}`;
+  const UPDATE_MANY = `UPDATE_MANY_${upperCase(type)}`;
   const DELETE = `DELETE_${upperCase(recordName)}`;
+  const DELETE_MANY = `DELETE_MANY_${upperCase(type)}`;
 
   provider.constants[SET] = SET;
   provider.constants[UPDATE] = UPDATE;
+  provider.constants[UPDATE_MANY] = UPDATE_MANY;
   provider.constants[DELETE] = DELETE;
+  provider.constants[DELETE_MANY] = DELETE_MANY;
 
   // Actions
   const setFn = (id, payload) => ({
@@ -39,14 +46,25 @@ export default function resourceProvider(type, recordName, recordKey) {
     id,
     payload,
   });
+  const updateManyFn = (ids, payload) => ({
+    type: UPDATE_MANY,
+    ids,
+    payload,
+  });
   const deleteFn = (id) => ({
     type: DELETE,
     id,
   });
+  const deleteManyFn = ids => ({
+    type: DELETE_MANY,
+    ids,
+  });
 
   provider.actions[`set${capitalize(recordName)}`] = setFn;
   provider.actions[`update${capitalize(recordName)}`] = updateFn;
+  provider.actions[`updateMany${capitalize(recordName)}`] = updateManyFn;
   provider.actions[`delete${capitalize(recordName)}`] = deleteFn;
+  provider.actions[`deleteMany${capitalize(recordName)}`] = deleteManyFn;
 
   // Reducers
   provider.reducers = {
@@ -57,6 +75,12 @@ export default function resourceProvider(type, recordName, recordKey) {
 
         case DELETE:
           return dissoc(state, state.indexOf(action.id));
+
+        case DELETE_MANY:
+          return action.ids.length
+            ? filter(state, id => action.ids.indexOf(id) === -1)
+            : state
+          ;
 
         default:
           return state;
@@ -74,8 +98,16 @@ export default function resourceProvider(type, recordName, recordKey) {
         case UPDATE:
           return updateIn(state, [action.id], merge, action.payload);
 
+        case UPDATE_MANY:
+          return mapValues(state, (todo, id) =>
+            action.ids.indexOf(id) !== -1 ? merge(todo, action.payload) : todo
+          );
+
         case DELETE:
           return dissoc(state, action.id);
+
+        case DELETE_MANY:
+          return pickBy(state, (todo, id) => action.ids.indexOf(id) === -1)
 
         default:
           return state;

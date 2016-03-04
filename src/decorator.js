@@ -9,11 +9,11 @@ export default function provide(provider, merge) {
   const { _providerType, reducers, actions } = provider;
 
   let availableStateProps = [_providerType, ...keys(provider.selectors)];
-  if (provider._additionalStateProps) {
-    availableStateProps = availableStateProps.concat(provider._additionalStateProps);
-  }
   if (typeof reducers === 'object') {
     availableStateProps = availableStateProps.concat(keys(provider.reducers));
+  }
+  if (provider._additionalStateProps) {
+    availableStateProps = availableStateProps.concat(provider._additionalStateProps);
   }
   const availableDispatchProps = keys(provider.actions);
 
