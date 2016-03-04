@@ -46,25 +46,33 @@ export default function resourceProvider(type, recordName, recordKey) {
     id,
     payload,
   });
-  const updateManyFn = (ids, payload) => ({
-    type: UPDATE_MANY,
-    ids,
-    payload,
-  });
+  const updateManyFn = (ids, payload) => dispatch => {
+    if (ids.length) {
+      dispatch({
+        type: UPDATE_MANY,
+        ids,
+        payload,
+      });
+    }
+  }
   const deleteFn = (id) => ({
     type: DELETE,
     id,
   });
-  const deleteManyFn = ids => ({
-    type: DELETE_MANY,
-    ids,
-  });
+  const deleteManyFn = ids => dispatch => {
+    if (ids.length) {
+      dispatch({
+        type: DELETE_MANY,
+        ids,
+      });
+    }
+  }
 
   provider.actions[`set${capitalize(recordName)}`] = setFn;
   provider.actions[`update${capitalize(recordName)}`] = updateFn;
-  provider.actions[`updateMany${capitalize(recordName)}`] = updateManyFn;
+  provider.actions[`updateMany${capitalize(type)}`] = updateManyFn;
   provider.actions[`delete${capitalize(recordName)}`] = deleteFn;
-  provider.actions[`deleteMany${capitalize(recordName)}`] = deleteManyFn;
+  provider.actions[`deleteMany${capitalize(type)}`] = deleteManyFn;
 
   // Reducers
   provider.reducers = {
@@ -77,10 +85,7 @@ export default function resourceProvider(type, recordName, recordKey) {
           return dissoc(state, state.indexOf(action.id));
 
         case DELETE_MANY:
-          return action.ids.length
-            ? filter(state, id => action.ids.indexOf(id) === -1)
-            : state
-          ;
+          return filter(state, id => action.ids.indexOf(id) === -1);
 
         default:
           return state;
@@ -116,8 +121,8 @@ export default function resourceProvider(type, recordName, recordKey) {
   };
 
   // Selectors
-  provider.selectors.records = state => state.todos.records;
-  provider.selectors.recordsById = state => state.todos.recordsById;
+  provider.selectors.records = state => state.records;
+  provider.selectors.recordsById = state => state.recordsById;
 
   // Augment state mapping
   provider._additionalStateProps = [typeById, recordName];
@@ -135,7 +140,7 @@ export default function resourceProvider(type, recordName, recordKey) {
         return propsStateMap[prop];
       }
       else if (provider.selectors.hasOwnProperty(prop)) {
-        return provider.selectors[prop](state);
+        return provider.selectors[prop](providerState);
       }
       else {
         return providerState[prop];
